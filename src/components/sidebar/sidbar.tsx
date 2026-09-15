@@ -1,0 +1,62 @@
+import {
+  faBed,
+  faCreditCard,
+  faDiagramNext,
+  faHospital,
+  faLayerGroup,
+  faMessage,
+  faSquareCheck,
+  faUserDoctor,
+  faWarehouse,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NavLink } from "react-router";
+
+function Sidbar() {
+  return (
+    <aside className="w-64 h-full text-left bg-[var(--bg-card)] border-r border-[var(--border)] p-4 flex flex-col gap-4 ">
+      <h2 className="flex gap-1 items-center text-xl font-bold text-[var(--text-h)] mb-2 ">
+        <img src="/public/logo.png" className="rounded-full w-10 border-[1px] border-[var(--border)]  " />
+        <span>WellNest</span>{" "}
+      </h2>
+      <NavLink to="/"  className="hover:pl-5 transition-all duration-300">
+        <FontAwesomeIcon className="pr-3 text-[var(--text)]" icon={faLayerGroup} />
+        Dashbord
+      </NavLink>
+      <NavLink to="/appointment" className="hover:pl-5 transition-all duration-300">
+        <FontAwesomeIcon className="pr-3 text-[var(--text)]" icon={faSquareCheck} />
+        Appointment
+      </NavLink>
+      <NavLink to="/Pations" className="hover:pl-5 transition-all duration-300">
+        <FontAwesomeIcon className="pr-3 text-[var(--text)]" icon={faBed} />
+        Pations
+      </NavLink>
+      <NavLink to="/doctors" className="hover:pl-5 transition-all duration-300">
+        <FontAwesomeIcon className="pr-3 text-[var(--text)]" icon={faUserDoctor} />
+        Doctors
+      </NavLink>
+      <NavLink to="/departments" className="hover:pl-5 transition-all duration-300">
+        <FontAwesomeIcon className="pr-3 text-[var(--text)]" icon={faHospital} />
+        Departments
+      </NavLink>
+      <NavLink to="/doctors_Schedule" className="hover:pl-5 transition-all duration-300">
+        <FontAwesomeIcon className="pr-3 text-[var(--text)]" icon={faDiagramNext} />
+        Doctors`Schedule
+      </NavLink>
+      <NavLink to="/payments" className="hover:pl-5 transition-all duration-300">
+        <FontAwesomeIcon className="pr-3 text-[var(--text)]" icon={faCreditCard} />
+        Payments
+      </NavLink>
+      <NavLink to="/enventory" className="hover:pl-5 transition-all duration-300">
+        <FontAwesomeIcon className="pr-3 text-[var(--text)]" icon={faWarehouse} />
+        Enventory
+      </NavLink>
+      <NavLink to="/messages" className="hover:pl-5 transition-all duration-300">
+        <FontAwesomeIcon className="pr-3 text-[var(--text)]" icon={faMessage} />
+        messages
+      </NavLink>
+    </aside>
+  );
+}
+
+export default Sidbar;
