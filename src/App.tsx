@@ -10,6 +10,7 @@ import Payments from "./routes/Payments";
 import Enventory from "./routes/enventory";
 import Messages from "./routes/messages";
 import Layout from "./layout";
+import DepartmentsDetails from "./routes/layout/DepartmentsDetails";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="Pations" element={<Pations />} />
           <Route path="doctors" element={<Doctors />} />
           <Route path="departments" element={<Departments />} />
+          <Route path="departments/:id" element={<DepartmentsDetails />} />
           <Route path="doctors_Schedule" element={<Doctors_Schedule />} />
           <Route path="payments" element={<Payments />} />
           <Route path="enventory" element={<Enventory />} />
