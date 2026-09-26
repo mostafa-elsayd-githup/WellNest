@@ -12,7 +12,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router";
 
-function Sidbar() {
+function Sidebar() {
   return (
     <aside className="w-64 h-full text-left bg-(--bg-card) border-r border-(--border) p-4 flex flex-col gap-4 ">
       <h2 className="flex gap-1 items-center text-xl font-bold text-(--text-h) mb-2 ">
@@ -21,15 +21,15 @@ function Sidbar() {
       </h2>
       <NavLink to="/"  className="hover:pl-5 transition-all duration-300">
         <FontAwesomeIcon className="pr-3 text-(--text)" icon={faLayerGroup} />
-        Dashbord
+        Dashboard
       </NavLink>
       <NavLink to="/appointment" className="hover:pl-5 transition-all duration-300">
         <FontAwesomeIcon className="pr-3 text-(--text)" icon={faSquareCheck} />
         Appointment
       </NavLink>
-      <NavLink to="/Pations" className="hover:pl-5 transition-all duration-300">
+      <NavLink to="/patients" className="hover:pl-5 transition-all duration-300">
         <FontAwesomeIcon className="pr-3 text-(--text)" icon={faBed} />
-        Pations
+        Patients
       </NavLink>
       <NavLink to="/doctors" className="hover:pl-5 transition-all duration-300">
         <FontAwesomeIcon className="pr-3 text-(--text)" icon={faUserDoctor} />
@@ -39,24 +39,24 @@ function Sidbar() {
         <FontAwesomeIcon className="pr-3 text-(--text)" icon={faHospital} />
         Departments
       </NavLink>
-      <NavLink to="/doctors_Schedule" className="hover:pl-5 transition-all duration-300">
+      <NavLink to="/doctors-schedule" className="hover:pl-5 transition-all duration-300">
         <FontAwesomeIcon className="pr-3 text-(--text)" icon={faDiagramNext} />
-        Doctors`Schedule
+        Doctors' Schedule
       </NavLink>
       <NavLink to="/payments" className="hover:pl-5 transition-all duration-300">
         <FontAwesomeIcon className="pr-3 text-(--text)" icon={faCreditCard} />
         Payments
       </NavLink>
-      <NavLink to="/enventory" className="hover:pl-5 transition-all duration-300">
+      <NavLink to="/inventory" className="hover:pl-5 transition-all duration-300">
         <FontAwesomeIcon className="pr-3 text-(--text)" icon={faWarehouse} />
-        Enventory
+        Inventory
       </NavLink>
       <NavLink to="/messages" className="hover:pl-5 transition-all duration-300">
         <FontAwesomeIcon className="pr-3 text-(--text)" icon={faMessage} />
-        messages
+        Messages
       </NavLink>
     </aside>
   );
 }
 
-export default Sidbar;
+export default Sidebar;
