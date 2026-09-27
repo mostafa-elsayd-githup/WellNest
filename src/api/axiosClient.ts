@@ -6,6 +6,7 @@ const axiosClient = axios.create({
     'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
     'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
     'Content-Type': 'application/json',
+    'Prefer': 'return=representation',
   },
 });
 
