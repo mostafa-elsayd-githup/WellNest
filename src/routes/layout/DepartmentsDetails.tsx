@@ -1,36 +1,48 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { getDepartmentById } from "../../services/departmentService";
-import type { Department_details } from "../../types/type";
+import {
+  getAllDoctorForDetailsPage,
+  getDepartmentByName,
+} from "../../services/departmentService";
+import type { Department_details, DoctorTypes } from "../../types/type";
 import Loader from "../../components/sidebar/loader/loader";
+import { toast } from "sonner";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 function DepartmentsDetails() {
-  const { id } = useParams<{ id: string }>();
-
+  const { name } = useParams<{ name: string }>();
   const [department, setDepartment] = useState<Department_details | null>(null);
+  const [doctors, setDoctors] = useState<DoctorTypes[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!id) return;
+    if (!name) return;
     const fetchDetails = async () => {
       try {
-        const data = await getDepartmentById(id);
-        setDepartment(data);
-      } catch (err) {
-        console.error("Error fetching department details:", err);
+        const data = await getDepartmentByName(name);
+        const doctors = await getAllDoctorForDetailsPage(name);
+        setDoctors(doctors);
+        setDepartment(data ?? null);
+      } catch (error) {
+        toast.error(
+          getErrorMessage(
+            error,
+            "Unable to load department details. Please try again later.",
+          ),
+        );
       } finally {
         setLoading(false);
       }
     };
 
     fetchDetails();
-  }, [id]);
+  }, [name]);
   return (
     <>
       {loading ? (
         <Loader />
       ) : (
-        <div className="mx-auto text-start w-full max-w-5xl px-4 py-6">
+        <div className="text-start w-full px-4 py-6">
           <div className="overflow-hidden rounded-2xl">
             <img
               src={department?.image_url}
@@ -62,7 +74,7 @@ function DepartmentsDetails() {
                   <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-(--accent)" />
                   <div>
                     <h3 className="text-xs font-semibold text-(--text-h)">
-                      {item.tilte}
+                      {item.title}
                     </h3>
 
                     <p className="mt-1 text-[11px] leading-4 text-(--text)">
@@ -78,39 +90,39 @@ function DepartmentsDetails() {
             <h2 className="mb-4 text-sm font-semibold text-(--text-h)">
               Our Team
             </h2>
-
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-              <div
-                className="
-              rounded-xl
-              bg-(--bg-card)
-              px-3 py-3
-              text-center
-              transition
-              hover:-translate-y-1
-              hover:shadow-sm
-              "
-              >
-                <img
-                  src="/bone.svg"
-                  alt="Dr. Petra Winsbury"
-                  className="mx-auto h-12 w-12 rounded-lg object-cover"
-                />
+              {doctors.map((doctor) => (
+                <div
+                  key={doctor.id}
+                  className="
+                  rounded-xl
+                bg-(--bg-card)
+                px-3 py-3
+                text-center
+                transition
+                hover:-translate-y-1
+                hover:shadow-sm
+                "
+                >
+                  <img
+                    src={doctor.avatar_url}
+                    alt={doctor.name}
+                    className="mx-auto h-12 w-12 rounded-[50%] object-cover"
+                  />
 
-                <h3 className="mt-2 text-[11px] font-semibold text-(--text-h)">
-                  Dr. Petra Winsbury
-                </h3>
+                  <h3 className="mt-2 text-[11px] font-semibold text-(--text-h)">
+                    {doctor.name}
+                  </h3>
 
-                <p className="mt-1 text-[9px] text-(--text)">
-                  Routine Check-Ups
-                </p>
+                  <p className="mt-1 text-[9px] text-(--text)">{doctor.bio}</p>
 
-                <div className="mt-2 flex justify-center gap-2 text-[10px] ">
-                  <span>in</span>
-                  <span>𝕏</span>
-                  <span>◎</span>
+                  <div className="mt-2 flex justify-center gap-2 text-[10px] ">
+                    <span>in</span>
+                    <span>𝕏</span>
+                    <span>◎</span>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
           </section>
         </div>
