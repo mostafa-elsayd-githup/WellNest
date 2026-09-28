@@ -1,13 +1,9 @@
 import {
   faBed,
-  faCreditCard,
-  faDiagramNext,
   faHospital,
   faLayerGroup,
-  faMessage,
   faSquareCheck,
   faUserDoctor,
-  faWarehouse,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router";
@@ -38,22 +34,6 @@ function Sidebar() {
       <NavLink to="/departments" className="hover:pl-5 transition-all duration-300">
         <FontAwesomeIcon className="pr-3 text-(--text)" icon={faHospital} />
         Departments
-      </NavLink>
-      <NavLink to="/doctors-schedule" className="hover:pl-5 transition-all duration-300">
-        <FontAwesomeIcon className="pr-3 text-(--text)" icon={faDiagramNext} />
-        Doctors' Schedule
-      </NavLink>
-      <NavLink to="/payments" className="hover:pl-5 transition-all duration-300">
-        <FontAwesomeIcon className="pr-3 text-(--text)" icon={faCreditCard} />
-        Payments
-      </NavLink>
-      <NavLink to="/inventory" className="hover:pl-5 transition-all duration-300">
-        <FontAwesomeIcon className="pr-3 text-(--text)" icon={faWarehouse} />
-        Inventory
-      </NavLink>
-      <NavLink to="/messages" className="hover:pl-5 transition-all duration-300">
-        <FontAwesomeIcon className="pr-3 text-(--text)" icon={faMessage} />
-        Messages
       </NavLink>
     </aside>
   );
