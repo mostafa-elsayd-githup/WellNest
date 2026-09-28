@@ -18,7 +18,7 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
 }) => {
     
   return (
-    <div className="w-full flex flex-col items-center justify-center p-8 text-center rounded-2xl border transition-colors duration-200 bg-(--error-bg) border-(--error-border)">
+    <div className="flex flex-col items-center justify-center p-8 text-center rounded-2xl transition-colors duration-200 bg-(--error-bg) ">
       <div className="w-20 h-20  flex items-center justify-center rounded-full bg-(--error-bg) text-(--error-text)  mb-4">
         <FontAwesomeIcon icon={faTriangleExclamation} className="text-5xl" />
       </div>

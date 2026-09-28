@@ -12,7 +12,7 @@ export default function NotFoundState({
   message ,
 }: NotFoundStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center p-8 text-center my-4 rounded-2xl bg-(--bg-searchInput)/50 border border-(--border) transition-all duration-300">
+    <div className="flex flex-col items-center justify-center p-8 text-center my-4 rounded-2xl bg-(--bg-searchInput)/50 transition-all duration-300">
       <div className="relative mb-4 flex items-center justify-center w-16 h-16 rounded-full bg-(--bg-status) text-(--button)">
         <FontAwesomeIcon icon={faSearch} className="text-2xl" />
       </div>
