@@ -4,9 +4,11 @@ import type {
   Department,
   Department_details,
   DoctorTypes,
+  PatientProp,
 } from "../types/type";
 import { type DoctorFormData } from "../types/type";
 import { DoctorSchema, SearchSchema } from "../Validations/DoctorSchema";
+import { Patientschema } from "../Validations/patientSchame";
 
 type DepartmentDetailsApi = Omit<Department_details, "treatments"> & {
   treatments: { tilte: string; description: string }[];
@@ -35,10 +37,12 @@ export const getDepartmentByName = async (
   if (!department) return undefined;
   return {
     ...department,
-    treatments: (department.treatments ?? []).map(({ tilte, ...treatment }) => ({
-      ...treatment,
-      title: tilte,
-    })),
+    treatments: (department.treatments ?? []).map(
+      ({ tilte, ...treatment }) => ({
+        ...treatment,
+        title: tilte,
+      }),
+    ),
   };
 };
 export const getAllDoctorForDetailsPage = async (
@@ -82,19 +86,20 @@ export const searchDoctorsBySpecialistDepartmentOrAvailability = async ({
     const response = await axiosClient.get("/Doctor");
     return response.data;
   }
-  const response = await axiosClient.get("/Doctor", {
-    params: {
-      select: "*",
-      or: `(status.eq.${searchTerm},specialist.ilike.%${searchTerm}%,department_name.ilike.%${searchTerm}%)`,
-    },
-  });
-  return response.data;
+    const response = await axiosClient.get("/Doctor", {
+      params: {
+        select: "*",
+        or: `(status.ilike.%${searchTerm},specialist.ilike.%${searchTerm}%,department_name.ilike.%${searchTerm}%)`,
+      },
+    });
+    return response.data;
+  
 };
 
 export const deleteDoctorFromDatabase = async (id: string) => {
   const DeleteUser = await axiosClient.delete("/Doctor", {
     params: {
-      selet:"id",
+      selet: "id",
       id: `eq.${id}`,
     },
   });
@@ -149,4 +154,50 @@ export const createDoctorRecord = async (
   const res = await axiosClient.post<DoctorTypes[]>("/Doctor", ValidData);
 
   return res.data;
+};
+
+// patient func
+
+export const GetAllPatient = async (): Promise<PatientProp[]> => {
+
+    const responseToGetPatient = await axiosClient.get("/patient");
+    if (
+      Array.isArray(responseToGetPatient.data) &&
+      responseToGetPatient.data.length === 0
+    ) {
+      return [];
+    }
+    return responseToGetPatient.data;
+
+};
+
+export const SearchPatientBy_Name_Age_Status = async (
+  SearchName: string,
+): Promise<PatientProp[]> => {
+  const datavalidation = Patientschema.safeParse(SearchName);
+  if (!datavalidation.success) {
+    throw new Error("Invalid search input type");
+  }
+  const seatchKey = Number(datavalidation.data)
+    ? `(id.eq.${SearchName})`
+    : `(name.ilike.%${SearchName}%)`;
+    const responseSearchPatientBY_Name_ID = await axiosClient.get("/patient", {
+      params: {
+        select: "*",
+        or: seatchKey,
+      },
+    });
+    return responseSearchPatientBY_Name_ID.data;
+  
+};
+export const serachByStatus = async (
+  status: string,
+): Promise<PatientProp[]> => {
+  const responsePatient = await axiosClient.get("/patient", {
+    params: {
+      select: "*",
+      status: `eq.${status}`,
+    },
+  });
+  return responsePatient.data;
 };
