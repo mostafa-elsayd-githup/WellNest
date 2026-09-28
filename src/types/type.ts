@@ -30,12 +30,16 @@ export type DoctorTypes = {
 };
 export type SearchInputState = {
   GetDoctor: DoctorTypes[];
-  fetchError: unknown;
+  GetPatient: PatientProp[];
+  fetchError: string | null;
   NotFoundUser: string;
   SearchName: string;
   isopen: boolean;
+  Loading: boolean;
   setGetDoctor: React.Dispatch<React.SetStateAction<DoctorTypes[]>>;
-  setFetchError: React.Dispatch<React.SetStateAction<unknown>>;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setGetPatient: React.Dispatch<React.SetStateAction<PatientProp[]>>;
+  setFetchError: React.Dispatch<React.SetStateAction<string | null>>;
   setNotFound: React.Dispatch<React.SetStateAction<string>>;
   setSearchName: React.Dispatch<React.SetStateAction<string>>;
   setIsopen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -51,7 +55,7 @@ export interface Appointment {
   appointment_time: string;
   status: "Completed" | "Pending" | "Cancelled";
 }
-export type FormDataType  = {
+export type FormDataType = {
   specialty: string;
   bio: string;
   consultation_fee: number;
@@ -66,8 +70,20 @@ export type FormDataType  = {
   Departments_ID: number;
   email: string;
 };
-export type DoctorFormData = FormDataType 
+export type DoctorFormData = FormDataType;
 export type list = {
-    id: number;
-    name: string;
-  };
+  id: number;
+  name: string;
+};
+export type PatientProp = {
+  id: number;
+  name: string;
+  age: number;
+  check_in: string;
+  created_at: string;
+  treatment: string;
+  room: string;
+  status: string;
+  avatar_url: null;
+  doctor_assigned:string
+};
