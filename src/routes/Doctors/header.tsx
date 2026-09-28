@@ -10,57 +10,74 @@ import { getErrorMessage } from "../../utils/getErrorMessage";
 import { toast } from "sonner";
 
 function Header() {
-  const context = useContext(SearchInputContext);
   const {
     setFetchError,
     setNotFound,
     setGetDoctor,
     SearchName,
     setSearchName,
-    setIsopen
-  } = context;
-  const handleSearchInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsopen,
+    setLoading,
+  } = useContext(SearchInputContext);
+
+  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchName(value);
     try {
-      const data = await searchDoctorsByNameSpecialistOrDepartment({
-        SearchName: value,
-      });
-      if (!data || data.length === 0) {
-        setNotFound("Doctor Was Not Found");
-        setGetDoctor([]);
-        return;
-      }
-      setNotFound("");
-      setFetchError("");
-      setGetDoctor(data);
+      setLoading(true);
+      setTimeout(async () => {
+        const data = await searchDoctorsByNameSpecialistOrDepartment({
+          SearchName: value,
+        });
+        if (!data || data.length === 0) {
+          setNotFound("Doctor Was Not Found");
+          setGetDoctor([]);
+          return;
+        }
+        setNotFound("");
+        setFetchError("");
+        setGetDoctor(data);
+      }, 1000);
     } catch (error) {
       const message = getErrorMessage(error, "Unable to search doctors.");
       setFetchError(message);
-      toast.error(message);
+      toast.error("Fetch Error", {
+        description: message,
+        duration: 10000,
+        dismissible: true,
+      });
+    } finally {
+      setLoading(false);
     }
   };
-  const handleSearchSelect = async (
-    e: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
+  const handleSearchSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    try {
-      const data = await searchDoctorsBySpecialistDepartmentOrAvailability({
-        SearchName: value,
-      });
-      if (!data || data.length === 0) {
-        setNotFound("Doctor Was Not Found");
-        setGetDoctor([]);
-        return;
+    setTimeout(async () => {
+      try {
+        setLoading(true);
+        const data = await searchDoctorsBySpecialistDepartmentOrAvailability({
+          SearchName: value,
+        });
+        if (!data || data.length === 0) {
+          setNotFound("Doctor Was Not Found");
+          setGetDoctor([]);
+          return;
+        }
+        setNotFound("");
+        setFetchError("");
+        setGetDoctor(data);
+      } catch (error) {
+        const messagge = getErrorMessage(error, "Unable to search doctors.");
+        setFetchError(messagge);
+        toast.error("Fetch Error", {
+          description: messagge,
+          duration: 10000,
+          dismissible: true,
+        });
+      } finally {
+        setLoading(false);
       }
-      setNotFound("");
-      setFetchError("");
-      setGetDoctor(data);
-    } catch (error) {
-      const message = getErrorMessage(error, "Unable to filter doctors.");
-      setFetchError(message);
-      toast.error(message);
-    }
+    }, 300);
   };
 
   return (
@@ -130,7 +147,10 @@ function Header() {
           </li>
         </ul>
         <div>
-          <button onClick={()=>setIsopen(true)} className="bg-(--button) hover:bg-(--button-hover) text-(--text-white) w-full rounded-2xl py-1.5 px-2 text-[18px] cursor-pointer">
+          <button
+            onClick={() => setIsopen(true)}
+            className="bg-(--button) hover:bg-(--button-hover) text-(--text-white) w-full rounded-2xl py-1.5 px-2 text-[18px] cursor-pointer"
+          >
             <FontAwesomeIcon icon={faPlus} /> Add Doctor
           </button>
         </div>

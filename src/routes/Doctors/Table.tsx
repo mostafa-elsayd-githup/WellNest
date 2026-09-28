@@ -1,10 +1,10 @@
-import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   deleteDoctorFromDatabase,
   getAllDoctor,
 } from "../../services/departmentService";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { toast } from "sonner";
 import Loader from "../../components/sidebar/loader/loader";
 import ErrorState from "../../error";
@@ -15,7 +15,6 @@ import { NavLink } from "react-router";
 import { AddDoctorModal } from "./Form";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 function Table() {
-  const [loading, setLoading] = useState(true);
   const context = useContext(SearchInputContext);
   const {
     fetchError,
@@ -27,6 +26,8 @@ function Table() {
     setSearchName,
     isopen,
     setIsopen,
+    Loading,
+    setLoading
   } = context;
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -39,13 +40,17 @@ function Table() {
           "Unable to load doctors. Please try again later.",
         );
         setFetchError(message);
-        toast.error(message);
+        toast.error(message, {
+          icon: <FontAwesomeIcon icon={faCircleXmark} />,
+          duration: 10000,
+          dismissible: true,
+        });
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, [setFetchError, setGetDoctor]);
+  }, [setFetchError, setGetDoctor, setLoading]);
 
   const handleDeleteDoctor = (doctorId: string, userName: string): void => {
     let isUndone: boolean = false;
@@ -91,18 +96,18 @@ function Table() {
   };
   return (
     <>
-      <div className="overflow-y-auto">
-        <table className="divide-y divide-(--border) w-full rounded-2xl ">
+      <div className="overflow-x-auto ">
+        <table className="divide-y divide-(--border) w-full min-w-225 rounded-2xl table-fixed ">
           <thead>
             <tr className="border-b border-(--border) ">
-              <th className="p-5 w-50">Name</th>
-              <th>ID</th>
-              <th>Department</th>
-              <th>Specialist</th>
-              <th>total patients</th>
-              <th>Today's appointments</th>
-              <th>Availability</th>
-              <th>Actions</th>
+              <th className="p-3 w-50">Name</th>
+              <th className="p-3">ID</th>
+              <th className="p-3">Department</th>
+              <th className="p-3">Specialist</th>
+              <th className="p-3">total patients</th>
+              <th className="p-3">Today's appointments</th>
+              <th className="p-3">Availability</th>
+              <th className="p-3">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -112,7 +117,7 @@ function Table() {
                   <ErrorState message={fetchError as string} />
                 </td>
               </tr>
-            ) : loading ? (
+            ) : Loading ? (
               <tr>
                 <td colSpan={8} className="py-16 text-center">
                   <div className="flex justify-center items-center w-full">
@@ -143,15 +148,20 @@ function Table() {
                 >
                   <td className="p-2">
                     <div className="flex items-center justify-center gap-2 w-36">
-                      <img
-                        className="w-10 h-10 rounded-[50%]"
-                        src={d.avatar_url||"https://khskwfnoxnasthlkqjiu.supabase.co/storage/v1/object/public/department-images/profile1.svg"}
-                        alt={d.name}
-                      />
+                     { d.avatar_url ? <img
+                       className="w-10 h-10 rounded-[50%]"
+                       src={d.avatar_url }
+                       alt={d.name}
+                       />: 
+                      <span className="w-9 h-9 shrink-0 rounded-full bg-(--bg) flex justify-center items-center text-(--text-secondary) text-2xl">
+                          {d.name[4].toLocaleUpperCase()}
+                        </span> 
+                      }
+                        
                       <h3>{d.name}</h3>
                     </div>
                   </td>
-                  <td className="max-w-25 truncate">{d.id}</td>
+                  <td className="max-w-10 truncate">{d.id}</td>
                   <td>{d.department_name}</td>
                   <td>{d.specialist}</td>
                   <td>{d.total_patients}</td>
