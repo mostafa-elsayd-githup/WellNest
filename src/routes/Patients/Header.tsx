@@ -11,7 +11,7 @@ import { getErrorMessage } from "../../utils/getErrorMessage";
 import { toast } from "sonner";
 
 function HeaderPatiens() {
-  const { SearchName, setSearchName, setGetPatient, setLoading, setNotFound } =
+  const { SearchName, setSearchName, setGetPatient, setLoading, setNotFound, setIsopen } =
     useContext(SearchInputContext);
   const handleSearchInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const Value = e.target.value;
@@ -92,7 +92,7 @@ function HeaderPatiens() {
         </select>
       </div>
       <div className="col-span-12 md:col-span-6 lg:col-span-3">
-        <button className="w-full bg-(--button) hover:bg-(--button-hover) text-(--text-white) rounded-2xl py-1.5 px-2 text-[18px] cursor-pointer">
+        <button onClick={()=> setIsopen(true)} className="w-full bg-(--button) hover:bg-(--button-hover) text-(--text-white) rounded-2xl py-1.5 px-2 text-[18px] cursor-pointer">
           Add Patien
         </button>
       </div>

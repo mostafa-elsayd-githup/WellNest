@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import NotFoundState from "../../NotFoundState";
+import { PatientForm } from "./Form";
 
 function TablePatien() {
   const {
@@ -19,6 +20,8 @@ function TablePatien() {
     GetPatient,
     setLoading,
     Loading,
+    isopen,
+    setIsopen
   } = useContext(SearchInputContext);
   const [patient, setPatient] = useState<PatientProp[]>([]);
   useEffect(() => {
@@ -133,6 +136,7 @@ function TablePatien() {
           </tbody>
         </table>
       </div>
+      <PatientForm isOpen={isopen} onClose={()=>setIsopen(false)} />;
     </>
   );
 }

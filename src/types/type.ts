@@ -76,14 +76,22 @@ export type list = {
   name: string;
 };
 export type PatientProp = {
-  id: number;
+  id?: number;
   name: string;
   age: number;
   check_in: string;
-  created_at: string;
+  created_at?: string;
   treatment: string;
   room: string;
   status: string;
-  avatar_url: null;
-  doctor_assigned:string
+  avatar_url?: string;
+  doctor_assigned: string;
+};
+export type patientFormType = PatientProp;
+export type Errortype = {
+  error: {
+    error: string;
+    message: string;
+    InputError: PropertyKey;
+  };
 };

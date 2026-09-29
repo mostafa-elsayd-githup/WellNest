@@ -4,11 +4,13 @@ import type {
   Department,
   Department_details,
   DoctorTypes,
+  patientFormType,
   PatientProp,
 } from "../types/type";
 import { type DoctorFormData } from "../types/type";
+import { getErrorMessage } from "../utils/getErrorMessage";
 import { DoctorSchema, SearchSchema } from "../Validations/DoctorSchema";
-import { Patientschema } from "../Validations/patientSchame";
+import { patientFormData, Patientschema } from "../Validations/patientSchame";
 
 type DepartmentDetailsApi = Omit<Department_details, "treatments"> & {
   treatments: { tilte: string; description: string }[];
@@ -86,14 +88,13 @@ export const searchDoctorsBySpecialistDepartmentOrAvailability = async ({
     const response = await axiosClient.get("/Doctor");
     return response.data;
   }
-    const response = await axiosClient.get("/Doctor", {
-      params: {
-        select: "*",
-        or: `(status.ilike.%${searchTerm},specialist.ilike.%${searchTerm}%,department_name.ilike.%${searchTerm}%)`,
-      },
-    });
-    return response.data;
-  
+  const response = await axiosClient.get("/Doctor", {
+    params: {
+      select: "*",
+      or: `(status.ilike.%${searchTerm},specialist.ilike.%${searchTerm}%,department_name.ilike.%${searchTerm}%)`,
+    },
+  });
+  return response.data;
 };
 
 export const deleteDoctorFromDatabase = async (id: string) => {
@@ -159,16 +160,14 @@ export const createDoctorRecord = async (
 // patient func
 
 export const GetAllPatient = async (): Promise<PatientProp[]> => {
-
-    const responseToGetPatient = await axiosClient.get("/patient");
-    if (
-      Array.isArray(responseToGetPatient.data) &&
-      responseToGetPatient.data.length === 0
-    ) {
-      return [];
-    }
-    return responseToGetPatient.data;
-
+  const responseToGetPatient = await axiosClient.get("/patient");
+  if (
+    Array.isArray(responseToGetPatient.data) &&
+    responseToGetPatient.data.length === 0
+  ) {
+    return [];
+  }
+  return responseToGetPatient.data;
 };
 
 export const SearchPatientBy_Name_Age_Status = async (
@@ -181,14 +180,13 @@ export const SearchPatientBy_Name_Age_Status = async (
   const seatchKey = Number(datavalidation.data)
     ? `(id.eq.${SearchName})`
     : `(name.ilike.%${SearchName}%)`;
-    const responseSearchPatientBY_Name_ID = await axiosClient.get("/patient", {
-      params: {
-        select: "*",
-        or: seatchKey,
-      },
-    });
-    return responseSearchPatientBY_Name_ID.data;
-  
+  const responseSearchPatientBY_Name_ID = await axiosClient.get("/patient", {
+    params: {
+      select: "*",
+      or: seatchKey,
+    },
+  });
+  return responseSearchPatientBY_Name_ID.data;
 };
 export const serachByStatus = async (
   status: string,
@@ -200,4 +198,35 @@ export const serachByStatus = async (
     },
   });
   return responsePatient.data;
+};
+
+export const CreatPatient = async (FormData: patientFormType) => {
+  const validation_Result = patientFormData.safeParse(FormData);
+  if (validation_Result.error) {
+    const formatError = validation_Result.error.issues.map((erro) => {
+      return {
+        error: erro.code,
+        message: erro.message,
+        InputError: erro.path[0],
+      };
+    });
+    return { success: false, error: formatError[0] };
+  }
+  if(validation_Result.success){
+
+    try {
+      const res = await axiosClient.post("/patient", validation_Result.data);
+      return {
+        status: "success",
+        message: "Patient record has been created successfully.",
+        data: res.data,
+      };
+    } catch (error) {
+      const message = getErrorMessage(
+        error,
+        "Failed to register patient record. Please try again.",
+      );
+      return { status: "error", message };
+    }
+  }
 };
