@@ -32,6 +32,7 @@ function Table() {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
+        setLoading(true)
         const getDoctors = await getAllDoctor();
         setGetDoctor(getDoctors);
       } catch (error) {
