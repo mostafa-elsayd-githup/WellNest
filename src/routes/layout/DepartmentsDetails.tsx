@@ -43,11 +43,11 @@ function DepartmentsDetails() {
         <Loader />
       ) : (
         <div className="text-start w-full px-4 py-6">
-          <div className="overflow-hidden rounded-2xl">
+          <div className="overflow-hidden m-auto h-115 w-[50%] flex justify-center items-center">
             <img
               src={department?.image_url}
               alt={department?.title}
-              className="h-64 w-full object-cover md:h-80"
+              className="h-full w-full rounded-2xl object-cover md:h-80"
             />
           </div>
           <div className="mt-5 flex items-center gap-2">
