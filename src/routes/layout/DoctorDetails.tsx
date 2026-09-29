@@ -32,7 +32,7 @@ const DoctorDetails = () => {
 
         setDoctor(profile);
         setAppointment(DocAppointment);
-      } catch (error: unknown) {
+      } catch (error) {
         const message = getErrorMessage(
           error,
           "Unable to load doctor details. Please try again later.",
@@ -153,7 +153,6 @@ const DoctorDetails = () => {
               </div>
             </div>
           </div>
-
           <div className="rounded-2xl border border-(--border) bg-(--bg-card) shadow-(--shadow) overflow-hidden transition-colors">
             <div className="p-5 border-b border-(--border) flex items-center justify-between">
               <h2 className="text-lg font-bold text-(--text-h)">
@@ -163,7 +162,6 @@ const DoctorDetails = () => {
                 Showing last {appointment.length} records
               </span>
             </div>
-
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
@@ -186,7 +184,7 @@ const DoctorDetails = () => {
                   <tbody className="divide-y divide-(--border) text-sm text-(--text-primary)">
                     <tr>
                       <td colSpan={8} className=" items-center">
-                        <ErrorState message={(fetchError as Error)?.message} />
+                        <ErrorState message={fetchError} />
                       </td>
                     </tr>
                   </tbody>
