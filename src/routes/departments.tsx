@@ -65,7 +65,7 @@ function Departments() {
                 </span>
                 <NavLink
                   className="bg-(--button) text-white p-1 rounded-[10px] "
-                  to={`/departments/${item.Departments_name}`}
+                  to={`Departments/${item.Departments_name}`}
                 >
                   See Detail
                 </NavLink>
