@@ -25,10 +25,7 @@ interface AddDoctorModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
-export const AddDoctorModal: React.FC<AddDoctorModalProps> = ({
-  isOpen,
-  onClose,
-}) => {
+export const AddDoctorModal: React.FC<AddDoctorModalProps> = ({isOpen, onClose}) => {
   const InitialState: FormDataType = {
     specialty: "",
     bio: "",
